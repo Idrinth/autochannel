@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ModuleFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">   
-  <UiMod name="AutoChannel" version="1.0.0" date="2021-03-06" >
+  <UiMod name="AutoChannel" version="1.0.3" date="2021-03-07" >
     <Author name="Idrinth"/>
     <Description text="Automatically picks a channel from party, warband, scenario and scenariogroup" />      
     <VersionSettings gameVersion="1.4.8" />      

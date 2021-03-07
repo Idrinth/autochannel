@@ -1,4 +1,4 @@
-AutoChannel = {VERSION = {major=1,minor=0,patch=0}}
+AutoChannel = {VERSION = {major=1,minor=0,patch=3}}
 
 local WARBAND = "/wb"
 local PARTY = "/p"
@@ -16,27 +16,41 @@ local function getSmartPartyChannel()
     return SAY
 end
 
+function AutoChannel.isScenario()
+    if GameData.Player.isInScenario then
+    	return true
+    end
+    if GameData.Player.zone == 167 then -- IC Siege
+    	return true
+    end
+    if GameData.Player.zone == 168 then -- Altdorf Siege
+    	return true
+    end
+    return false
+end
+
 local function getSmartBandChannel()
+    if AutoChannel.isScenario() then
+        return SCENARIO
+    end 
     if IsWarBandActive() then
         return WARBAND
     end 
-    return GetSmartPartyChannel()
+    return getSmartPartyChannel()
 end
 
 local function send(channel, message, allowSay)
 	if channel == SAY and not allowSay then
 		return
 	end
-    if (GameData.Player.isInScenario) then
-        if (channel == PARTY) then
-            channel = SCPARTY
-        elseif (channel == WARBAND) then
-            channel = SCENARIO
-        end
+    if channel == PARTY and AutoChannel.isSzenario() then
+		channel = SCPARTY
     end
-
-   message = channel.." "..message
-   SendChatText(towstring(message), L"")
+    if type(message) == "wstring" then
+    	message = tostring(message)
+    end
+    message = channel.." "..message
+    SendChatText(towstring(message), L"")
 end
 
 function AutoChannel.sendChatBand(phrase)
@@ -65,5 +79,3 @@ function AutoChannel.Initialize()
     LibSlash.RegisterSlashCmd("acps", AutoChannel.sendChatPartySay)
     LibSlash.RegisterSlashCmd("acbs", AutoChannel.sendChatBandSay)
 end
-
-
