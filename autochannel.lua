@@ -1,4 +1,4 @@
-AutoChannel = {VERSION = {major=1,minor=0,patch=3}}
+AutoChannel = {VERSION = {major=1,minor=0,patch=5}}
 
 local WARBAND = "/wb"
 local PARTY = "/p"
@@ -18,6 +18,9 @@ end
 
 function AutoChannel.isScenario()
     if GameData.Player.isInScenario then
+    	return true
+    end
+    if GameData.Player.isInSiege then
     	return true
     end
     if GameData.Player.zone == 167 then -- IC Siege
@@ -43,7 +46,7 @@ local function send(channel, message, allowSay)
 	if channel == SAY and not allowSay then
 		return
 	end
-    if channel == PARTY and AutoChannel.isSzenario() then
+    if channel == PARTY and AutoChannel.isScenario() then
 		channel = SCPARTY
     end
     if type(message) == "wstring" then
